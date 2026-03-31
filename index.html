@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Сказка = Реальность</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <section id="startScreen" class="screen active">
+        <div class="panel start-panel">
+          <div class="eyebrow"></div>
+          <h1 class="game-title">Сказочный Мэтч</h1>
+          <p class="game-subtitle">
+            Соединяйте сказочные образы с современными аналогами и проходите
+            уровни по темам.
+          </p>
+          <div class="start-actions">
+            <button id="startGameBtn" class="action-btn primary">Начать</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="gameScreen" class="screen">
+        <header class="topbar panel">
+          <div class="topbar-left">
+            <div class="eyebrow">
+              Уровень <span id="levelIndex">1</span> /
+              <span id="levelTotal">1</span>
+            </div>
+            <h2 id="levelTitle" class="level-title">Заголовок уровня</h2>
+          </div>
+          <div class="topbar-right">
+            <button id="hintBtn" class="action-btn">Подсказка</button>
+            <button id="restartBtn" class="action-btn">Заново</button>
+            <button id="menuBtn" class="action-btn">В меню</button>
+            <button id="nextBtn" class="action-btn primary" disabled>
+              Далее
+            </button>
+          </div>
+        </header>
+
+        <main class="game-layout">
+          <section class="column-wrap panel">
+            <div class="column-title">Сказка</div>
+            <div id="leftColumn" class="cards-column"></div>
+          </section>
+
+          <section class="center-panel">
+            <div id="explanationBox" class="panel explanation-box hidden">
+              <div class="explanation-title">Пояснение</div>
+              <div id="explanationText" class="explanation-text"></div>
+            </div>
+
+            <div class="panel status-box">
+              <div class="status-row">
+                <span>Собрано пар:</span>
+                <strong id="progressValue">0 / 0</strong>
+              </div>
+              <div class="status-row">
+                <span>Подсказки:</span>
+                <strong>без ограничений</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="column-wrap panel">
+            <div class="column-title">Реальность</div>
+            <div id="rightColumn" class="cards-column"></div>
+          </section>
+        </main>
+      </section>
+
+      <section id="finishScreen" class="screen">
+        <div class="panel start-panel">
+          <div class="eyebrow">Финал</div>
+          <h2 class="game-title">Все уровни пройдены</h2>
+          <p class="game-subtitle">
+            Игрок завершил всю линейку тем. Можно пройти заново или вернуться в
+            меню.
+          </p>
+          <div class="start-actions">
+            <button id="playAgainBtn" class="action-btn primary">
+              Пройти заново
+            </button>
+            <button id="finishMenuBtn" class="action-btn">В меню</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="data/levels.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

@@ -451,7 +451,7 @@
 
   if (els.startGameBtn) {
     els.startGameBtn.addEventListener(
-      "click",
+      "touchstart",
       (event) => {
         event.preventDefault();
         startGame();

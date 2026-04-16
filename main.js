@@ -1,4 +1,10 @@
 (function () {
+  const GAME_MODE_ALL = "all";
+  const GAME_MODE_SINGLE = "single";
+
+  const FINISH_MODE_ALL = "all";
+  const FINISH_MODE_SINGLE = "single";
+
   const state = {
     currentLevelIndex: 0,
     selectedLeftId: null,
@@ -7,19 +13,50 @@
     leftCards: [],
     rightCards: [],
     hintsLeft: 6,
+    gameMode: GAME_MODE_ALL,
+    finishMode: FINISH_MODE_ALL,
   };
+  function addTapListener(element, handler) {
+    let touched = false;
 
+    element.addEventListener(
+      "touchstart",
+      (e) => {
+        touched = true;
+        e.preventDefault();
+        handler(e);
+      },
+      { passive: false },
+    );
+
+    element.addEventListener("click", (e) => {
+      if (touched) {
+        touched = false;
+        return;
+      }
+      handler(e);
+    });
+  }
   const els = {
     startScreen: document.getElementById("startScreen"),
+    levelSelectScreen: document.getElementById("levelSelectScreen"),
     gameScreen: document.getElementById("gameScreen"),
     finishScreen: document.getElementById("finishScreen"),
+
     startGameBtn: document.getElementById("startGameBtn"),
+    chooseLevelBtn: document.getElementById("chooseLevelBtn"),
+    chooseLevelBtn2: document.getElementById("chooseLevelBtn2"),
+    levelMenuBackBtn: document.getElementById("levelMenuBackBtn"),
+
     playAgainBtn: document.getElementById("playAgainBtn"),
     finishMenuBtn: document.getElementById("finishMenuBtn"),
+    finishSelectLevelBtn: document.getElementById("finishSelectLevelBtn"),
+
     hintBtn: document.getElementById("hintBtn"),
     restartBtn: document.getElementById("restartBtn"),
     menuBtn: document.getElementById("menuBtn"),
     nextBtn: document.getElementById("nextBtn"),
+
     levelIndex: document.getElementById("levelIndex"),
     levelTotal: document.getElementById("levelTotal"),
     levelTitle: document.getElementById("levelTitle"),
@@ -28,6 +65,12 @@
     explanationBox: document.getElementById("explanationBox"),
     explanationText: document.getElementById("explanationText"),
     progressValue: document.getElementById("progressValue"),
+
+    levelList: document.getElementById("levelList"),
+
+    finishEyebrow: document.getElementById("finishEyebrow"),
+    finishTitle: document.getElementById("finishTitle"),
+    finishSubtitle: document.getElementById("finishSubtitle"),
   };
 
   els.levelTotal.textContent = String(window.levels.length);
@@ -46,33 +89,29 @@
   }
 
   function showScreen(screen) {
-    [els.startScreen, els.gameScreen, els.finishScreen].forEach((el) =>
-      el.classList.remove("active"),
-    );
-    screen.classList.add("active");
-  }
-  function useHint() {
-    if (state.hintsLeft <= 0) return;
+    [els.startScreen, els.levelSelectScreen, els.gameScreen, els.finishScreen]
+      .filter(Boolean)
+      .forEach((el) => el.classList.remove("active"));
 
-    const pair = getUnmatchedPair(); // твоя функция поиска незакрытой пары
-    if (!pair) return;
-
-    highlightPair(pair);
-
-    state.hintsLeft--;
-    updateHintsUI();
-  }
-  function updateHintsUI() {
-    const hintBtn = document.getElementById("hintBtn");
-
-    hintBtn.innerText = `Подсказка (${state.hintsLeft})`;
-
-    if (state.hintsLeft <= 0) {
-      hintBtn.classList.add("disabled");
-    } else {
-      hintBtn.classList.remove("disabled");
+    if (screen) {
+      screen.classList.add("active");
     }
   }
+
+  function updateHintsUI() {
+    if (!els.hintBtn) return;
+
+    els.hintBtn.innerText = `Подсказка (${state.hintsLeft})`;
+
+    if (state.hintsLeft <= 0) {
+      els.hintBtn.classList.add("disabled");
+      els.hintBtn.disabled = true;
+    } else {
+      els.hintBtn.classList.remove("disabled");
+      els.hintBtn.disabled = false;
+    }
+  }
+
   function buildCard(item, levelType, side) {
     const card = document.createElement("button");
     card.type = "button";
@@ -106,7 +145,14 @@
         </div>
       </div>`;
 
-    card.addEventListener("click", () => onCardClick(card));
+    card.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        onCardClick(card);
+      },
+      { passive: false },
+    );
     return card;
   }
 
@@ -143,7 +189,14 @@
     els.rightColumn.innerHTML = "";
     hideExplanation();
     updateProgress();
-    els.nextBtn.disabled = true;
+
+    if (state.gameMode === GAME_MODE_SINGLE) {
+      els.nextBtn.disabled = true;
+      els.nextBtn.classList.add("hidden");
+    } else {
+      els.nextBtn.disabled = true;
+      els.nextBtn.classList.remove("hidden");
+    }
 
     state.leftCards.forEach((item) =>
       els.leftColumn.appendChild(buildCard(item, level.type, "left")),
@@ -172,14 +225,18 @@
     }
 
     clearSelectionClasses();
-    if (state.selectedLeftId)
+
+    if (state.selectedLeftId) {
       document
         .querySelector(`.card[data-item-id="${state.selectedLeftId}"]`)
         ?.classList.add("selected");
-    if (state.selectedRightId)
+    }
+
+    if (state.selectedRightId) {
       document
         .querySelector(`.card[data-item-id="${state.selectedRightId}"]`)
         ?.classList.add("selected");
+    }
 
     if (state.selectedLeftId && state.selectedRightId) {
       checkMatch();
@@ -193,6 +250,7 @@
     const rightCard = document.querySelector(
       `.card[data-item-id="${state.selectedRightId}"]`,
     );
+
     if (!leftCard || !rightCard) return;
 
     const pairId = leftCard.dataset.pairId;
@@ -200,15 +258,24 @@
 
     if (isMatch) {
       state.matchedPairIds.add(pairId);
+
       [leftCard, rightCard].forEach((card) => {
         card.classList.remove("selected", "selectable", "hint");
         card.classList.add("matched", "magic-burst");
         setTimeout(() => card.classList.remove("magic-burst"), 850);
       });
+
       showExplanationForPair(pairId);
       updateProgress();
+
       if (state.matchedPairIds.size === getLevel().pairs.length) {
-        els.nextBtn.disabled = false;
+        if (state.gameMode === GAME_MODE_SINGLE) {
+          setTimeout(() => {
+            openFinishScreen(FINISH_MODE_SINGLE);
+          }, 450);
+        } else {
+          els.nextBtn.disabled = false;
+        }
       }
     } else {
       [leftCard, rightCard].forEach((card) => {
@@ -247,6 +314,7 @@
   }
 
   function startGame() {
+    state.gameMode = GAME_MODE_ALL;
     state.hintsLeft = 6;
     updateHintsUI();
     state.currentLevelIndex = 0;
@@ -254,28 +322,111 @@
     showScreen(els.gameScreen);
   }
 
+  function startSelectedLevel(levelIndex) {
+    state.gameMode = GAME_MODE_SINGLE;
+    state.hintsLeft = 6;
+    updateHintsUI();
+    state.currentLevelIndex = levelIndex;
+    renderLevel();
+    showScreen(els.gameScreen);
+  }
+
   function restartLevel() {
+    state.hintsLeft = 6;
+    updateHintsUI();
     renderLevel();
   }
 
   function nextLevel() {
     if (state.matchedPairIds.size !== getLevel().pairs.length) return;
+
     if (state.currentLevelIndex >= window.levels.length - 1) {
-      showScreen(els.finishScreen);
+      openFinishScreen(FINISH_MODE_ALL);
       return;
     }
+
     state.currentLevelIndex += 1;
     renderLevel();
   }
 
   function backToMenu() {
+    state.gameMode = GAME_MODE_ALL;
     showScreen(els.startScreen);
   }
 
+  function renderLevelList() {
+    if (!els.levelList) return;
+
+    els.levelList.innerHTML = "";
+
+    window.levels.forEach((level, index) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "level-btn";
+      btn.textContent = `${index + 1}. ${level.title}`;
+      btn.addEventListener("click", () => {
+        startSelectedLevel(index);
+      });
+
+      els.levelList.appendChild(btn);
+    });
+  }
+
+  function openLevelSelect() {
+    renderLevelList();
+    showScreen(els.levelSelectScreen);
+  }
+
+  function openFinishScreen(mode) {
+    state.finishMode = mode;
+
+    if (mode === FINISH_MODE_SINGLE) {
+      if (els.finishEyebrow) {
+        els.finishEyebrow.textContent = "Уровень завершён";
+      }
+      if (els.finishTitle) {
+        els.finishTitle.textContent = "Уровень пройден";
+      }
+      if (els.finishSubtitle) {
+        els.finishSubtitle.textContent =
+          "Можно вернуться в меню или выбрать другой уровень.";
+      }
+
+      if (els.playAgainBtn) {
+        els.playAgainBtn.classList.add("hidden");
+      }
+      if (els.finishSelectLevelBtn) {
+        els.finishSelectLevelBtn.classList.remove("hidden");
+      }
+    } else {
+      if (els.finishEyebrow) {
+        els.finishEyebrow.textContent = "Финал";
+      }
+      if (els.finishTitle) {
+        els.finishTitle.textContent = "Все уровни пройдены";
+      }
+      if (els.finishSubtitle) {
+        els.finishSubtitle.textContent = "Молодец!";
+      }
+
+      if (els.playAgainBtn) {
+        els.playAgainBtn.classList.remove("hidden");
+      }
+      if (els.finishSelectLevelBtn) {
+        els.finishSelectLevelBtn.classList.add("hidden");
+      }
+    }
+
+    showScreen(els.finishScreen);
+  }
+
   function showHint() {
+    if (state.hintsLeft <= 0) return;
+
     document
       .querySelectorAll(".card.hint")
       .forEach((el) => el.classList.remove("hint"));
+
     const unconnected = getLevel().pairs.find(
       (pair) => !state.matchedPairIds.has(pair.id),
     );
@@ -287,19 +438,130 @@
     const rightCard = document.querySelector(
       `.card[data-pair-id="${unconnected.id}"][data-side="right"]`,
     );
+
     [leftCard, rightCard].forEach((card) => card?.classList.add("hint"));
-    setTimeout(
-      () =>
-        [leftCard, rightCard].forEach((card) => card?.classList.remove("hint")),
-      1800,
+
+    state.hintsLeft -= 1;
+    updateHintsUI();
+
+    setTimeout(() => {
+      [leftCard, rightCard].forEach((card) => card?.classList.remove("hint"));
+    }, 1800);
+  }
+
+  if (els.startGameBtn) {
+    els.startGameBtn.addEventListener(
+      "click",
+      (event) => {
+        event.preventDefault();
+        startGame();
+      },
+      { passive: false },
     );
   }
 
-  els.startGameBtn.addEventListener("click", startGame);
-  els.playAgainBtn.addEventListener("click", startGame);
-  els.finishMenuBtn.addEventListener("click", backToMenu);
-  els.restartBtn.addEventListener("click", restartLevel);
-  els.menuBtn.addEventListener("click", backToMenu);
-  els.nextBtn.addEventListener("click", nextLevel);
-  els.hintBtn.addEventListener("click", showHint, useHint);
+  if (els.chooseLevelBtn) {
+    els.chooseLevelBtn.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        openLevelSelect();
+      },
+      { passive: false },
+    );
+  }
+
+  if (els.chooseLevelBtn2) {
+    els.chooseLevelBtn2.addEventListener("click", openLevelSelect);
+  }
+
+  if (els.levelMenuBackBtn) {
+    els.levelMenuBackBtn.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        backToMenu();
+      },
+      { passive: false },
+    );
+  }
+
+  if (els.playAgainBtn) {
+    els.playAgainBtn.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        startGame();
+      },
+      { passive: false },
+    );
+  }
+
+  if (els.finishMenuBtn) {
+    els.finishMenuBtn.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        backToMenu();
+      },
+      { passive: false },
+    );
+  }
+
+  if (els.finishSelectLevelBtn) {
+    els.finishSelectLevelBtn.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        openLevelSelect();
+      },
+      { passive: false },
+    );
+  }
+
+  if (els.restartBtn) {
+    els.restartBtn.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        restartLevel();
+      },
+      { passive: false },
+    );
+  }
+
+  if (els.menuBtn) {
+    els.menuBtn.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        backToMenu();
+      },
+      { passive: false },
+    );
+  }
+
+  if (els.nextBtn) {
+    els.nextBtn.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        nextLevel();
+      },
+      { passive: false },
+    );
+  }
+
+  if (els.hintBtn) {
+    els.hintBtn.addEventListener(
+      "touchstart",
+      (event) => {
+        event.preventDefault();
+        showHint();
+      },
+      { passive: false },
+    );
+  }
+
+  updateHintsUI();
 })();

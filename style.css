@@ -80,6 +80,7 @@ button {
   font-size: clamp(42px, 4vw, 64px);
   line-height: 1;
   font-weight: 400;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 .game-subtitle {
   max-width: 680px;
@@ -122,7 +123,7 @@ button {
 #startGameBtn {
   width: 260px;
   height: 80px;
-  font-size: 28px;
+  font-size: 24px;
   background: #c6d669;
 }
 
@@ -207,7 +208,9 @@ button {
 .status-row + .status-row {
   margin-top: 10px;
 }
-
+.status-box:nth-child(0) {
+  display: none;
+}
 .card {
   position: relative;
   perspective: 1200px;
@@ -259,8 +262,8 @@ button {
     0 10px 22px rgba(0, 0, 0, 0.22);
 }
 .card.selected .card-front {
-  border-color: rgba(143, 224, 255, 0.85);
-  box-shadow: 0 0 0 11px rgba(143, 224, 255, 0.35);
+  border-color: rgba(143, 224, 255, 1);
+  box-shadow: 0 0 0 11px rgba(0, 183, 255, 0.65);
 }
 .card.hint .card-front {
   border-color: rgba(215, 168, 87, 0.95);
@@ -285,6 +288,7 @@ button {
     rgba(0, 0, 0, 0.08)
   );
 }
+
 .card-back-content {
   gap: 8px;
   font-size: 22px;
@@ -304,6 +308,7 @@ button {
   min-height: 0;
   object-fit: contain;
   transition: transform 0.28s ease;
+  border-radius: 20px;
 }
 .card.matched .image-card-content img {
   transform: scale(1.06);
@@ -360,4 +365,77 @@ button {
 .disabled {
   opacity: 0.4;
   pointer-events: none;
+}
+
+#chooseLevelBtn {
+  min-width: 260px;
+  height: 80px;
+  font-size: 28px;
+}
+
+.level-select-panel {
+  max-width: 1100px;
+  height: 720px;
+}
+
+.level-select-subtitle {
+  max-width: 780px;
+}
+
+.level-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.level-select-btn {
+  min-width: 0;
+  height: auto;
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  padding: 18px 20px;
+}
+
+.level-select-index {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.16);
+  font-size: 22px;
+}
+
+.level-select-title {
+  display: block;
+  line-height: 1.25;
+  font-size: 20px;
+}
+
+@media (max-width: 1400px) {
+  .level-select-panel {
+    max-width: 960px;
+    height: 680px;
+  }
+
+  .level-select-title {
+    font-size: 18px;
+  }
+}
+.level-btn {
+  height: 80px;
+  border-radius: 20px;
+  color: #22160f;
+  background: #ead8b7;
+  box-shadow: 0 0 5px rgba(23, 18, 26, 0.5);
+}
+img {
+  border-radius: 20px;
 }

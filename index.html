@@ -17,7 +17,12 @@
             уровни по темам.
           </p>
           <div class="start-actions">
-            <button id="startGameBtn" class="action-btn primary">Начать</button>
+            <button id="startGameBtn" class="action-btn primary">
+              Все уровни подряд
+            </button>
+            <button id="chooseLevelBtn" class="action-btn">
+              Выбрать уровень
+            </button>
           </div>
         </div>
       </section>
@@ -43,7 +48,7 @@
 
         <main class="game-layout">
           <section class="column-wrap panel">
-            <div class="column-title">Сказка</div>
+            <div class="column-title"></div>
             <div id="leftColumn" class="cards-column"></div>
           </section>
 
@@ -58,32 +63,44 @@
                 <span>Собрано пар:</span>
                 <strong id="progressValue">0 / 0</strong>
               </div>
-              <div class="status-row">
-                <span>Подсказки:</span>
-                <strong>без ограничений</strong>
-              </div>
+              <div class="status-row"></div>
             </div>
           </section>
 
           <section class="column-wrap panel">
-            <div class="column-title">Реальность</div>
+            <div class="column-title"></div>
             <div id="rightColumn" class="cards-column"></div>
           </section>
         </main>
       </section>
 
+      <section id="levelSelectScreen" class="screen">
+        <div class="panel start-panel level-select-panel">
+          <div class="eyebrow">Навигация</div>
+          <h2 class="game-title">Выбор уровня</h2>
+          <p class="game-subtitle level-select-subtitle">
+            Выберите уровень для отдельного прохождения.
+          </p>
+          <div id="levelList" class="level-list"></div>
+          <div class="start-actions">
+            <button id="levelMenuBackBtn" class="action-btn">В меню</button>
+          </div>
+        </div>
+      </section>
+
       <section id="finishScreen" class="screen">
         <div class="panel start-panel">
-          <div class="eyebrow">Уровни пройдены</div>
-          <h2 class="game-title"></h2>
-          <p class="game-subtitle">
-            Молодец!
-          </p>
+          <div class="eyebrow">Финал</div>
+          <h2 id="finishTitle" class="game-title">Все уровни пройдены</h2>
+          <p id="finishSubtitle" class="game-subtitle">Молодец!</p>
           <div class="start-actions">
             <button id="playAgainBtn" class="action-btn primary">
               Пройти заново
             </button>
             <button id="finishMenuBtn" class="action-btn">В меню</button>
+            <button id="finishChooseLevelBtn" class="action-btn hidden">
+              Выбрать уровень
+            </button>
           </div>
         </div>
       </section>

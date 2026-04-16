@@ -31,7 +31,7 @@
           },
           right: {
             label: "Самолет",
-            image: "../assets/images/level_1/samolet.png",
+            image: "./assets/images/level_1/samolet.png",
           },
           explanation:
             "Ковер-самолет — это образ быстрого перемещения на большие расстояния, как современный самолет.",
@@ -40,11 +40,11 @@
           id: "mirror-phone",
           left: {
             label: "Волшебное зеркало",
-            image: "../assets/images/level_1/zerkalo.png",
+            image: "./assets/images/level_1/zerkalo.png",
           },
           right: {
             label: "Смартфон",
-            image: "../assets/images/level_1/smartfon.png",
+            image: "./assets/images/level_1/smartfon.png",
           },
           explanation:
             "Волшебное зеркало показывает далёкие события и лица, как экран телефона или видеосвязь.",
@@ -53,11 +53,11 @@
           id: "feather-bulb",
           left: {
             label: "Перо Жар-птицы",
-            image: "../assets/images/level_1/pero.png",
+            image: "./assets/images/level_1/pero.png",
           },
           right: {
             label: "Лампочка",
-            image: "../assets/images/level_1/ilampochka.png",
+            image: "./assets/images/level_1/ilampochka.png",
           },
           explanation:
             "Перо Жар-птицы светится и освещает путь, как искусственный источник света.",
@@ -66,11 +66,11 @@
           id: "chest-safe",
           left: {
             label: "Ларец",
-            image: "../assets/images/level_1/larec.png",
+            image: "./assets/images/level_1/larec.png",
           },
           right: {
             label: "Сейф",
-            image: "../assets/images/level_1/seif.png",
+            image: "./assets/images/level_1/seif.png",
           },
           explanation:
             "Ларец хранит ценности, как современный сейф или защищенное хранилище.",
@@ -79,11 +79,11 @@
           id: "messenger-mail",
           left: {
             label: "Гонец",
-            image: "../assets/images/level_1/gonec.png",
+            image: "./assets/images/level_1/gonec.png",
           },
           right: {
             label: "Курьер",
-            image: "../assets/images/level_1/kurier.png",
+            image: "./assets/images/level_1/kurier.png",
           },
           explanation:
             "Гонец доставляет вести и поручения, как современный курьер или служба доставки.",
@@ -92,11 +92,11 @@
           id: "book-internet",
           left: {
             label: "Волшебная книга",
-            image: "../assets/images/level_1/kniga.png",
+            image: "./assets/images/level_1/kniga.png",
           },
           right: {
             label: "Интернет",
-            image: "../assets/images/level_1/internet.png",
+            image: "./assets/images/level_1/internet.png",
           },
           explanation:
             "Волшебная книга знает ответы и открывает знания, как цифровая сеть и поиск информации.",
@@ -112,11 +112,11 @@
           id: "klubochek-navigator",
           left: {
             label: "Клубочек",
-            image: "../assets/images/level_2/klubochek.png",
+            image: "./assets/images/level_2/klubochek.png",
           },
           right: {
             label: "Навигатор",
-            image: "../assets/images/level_2/navigator.png",
+            image: "./assets/images/level_2/navigator.png",
           },
           explanation:
             "Клубочек — Показывает направление движения, как современный навигатор.",
@@ -125,11 +125,11 @@
           id: "sapogi-cross",
           left: {
             label: "Сапоги-скороходы",
-            image: "../assets/images/level_2/sapogi.png",
+            image: "./assets/images/level_2/sapogi.png",
           },
           right: {
             label: "Кроссовки",
-            image: "../assets/images/level_2/cross.png",
+            image: "./assets/images/level_2/cross.png",
           },
           explanation:
             "Сапоги-скороходы позволяют быстро перемещаться, как современные кроссовки. Практичная обувь для далёких путешествий.",
@@ -138,11 +138,11 @@
           id: "yablochko-lekarstva",
           left: {
             label: "Молодильные яблочки",
-            image: "../assets/images/level_2/yablochko.png",
+            image: "./assets/images/level_2/yablochko.png",
           },
           right: {
             label: "Лекарства и витамины",
-            image: "../assets/images/level_2/lekarstva.png",
+            image: "./assets/images/level_2/lekarstva.png",
           },
           explanation:
             "Молодильные яблочки сохраняют здоровье и молодость, как современные лекарства и витамины.",
@@ -151,11 +151,11 @@
           id: "pech-avtomobil",
           left: {
             label: "Печь",
-            image: "../assets/images/level_2/pech.png",
+            image: "./assets/images/level_2/pech.png",
           },
           right: {
             label: "Автомобиль",
-            image: "../assets/images/level_2/avtomobil.png",
+            image: "./assets/images/level_2/avtomobil.png",
           },
           explanation:
             "Емеля издил на печке, как мы на современных автомобилях.",
@@ -164,11 +164,11 @@
           id: "gorshochek-multivarka",
           left: {
             label: "Волшебный горшочек",
-            image: "../assets/images/level_2/gorshochek.png",
+            image: "./assets/images/level_2/gorshochek.png",
           },
           right: {
             label: "Мультиварка",
-            image: "../assets/images/level_2/multivarka.png",
+            image: "./assets/images/level_2/multivarka.png",
           },
           explanation:
             "Волшебный горшочек готовит еду, как современная мультиварка.",
@@ -177,11 +177,11 @@
           id: "mech-internet",
           left: {
             label: "Меч-саморуб",
-            image: "../assets/images/level_2/mech.png",
+            image: "./assets/images/level_2/mech.png",
           },
           right: {
             label: "Бензопила",
-            image: "../assets/images/level_2/benzopila.png",
+            image: "./assets/images/level_2/benzopila.png",
           },
           explanation:
             "Меч-саморуб используется для рубки дерева, как современная бензопила.",

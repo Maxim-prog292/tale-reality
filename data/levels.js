@@ -27,7 +27,7 @@
           id: "carpet-plane",
           left: {
             label: "Ковер-самолет",
-            image: "../assets/images/level_1/cover_samolet.png",
+            image: "./assets/images/level_1/cover_samolet.png",
           },
           right: {
             label: "Самолет",

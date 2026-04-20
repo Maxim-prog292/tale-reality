@@ -16,6 +16,33 @@
     gameMode: GAME_MODE_ALL,
     finishMode: FINISH_MODE_ALL,
   };
+
+  window.addEventListener("mousewheel", function (e) {
+        if (e.ctrlKey) {
+          e.preventDefault();
+          return false;
+        }
+      });
+      document.addEventListener(
+        "touchstart",
+        (e) => {
+          // Если используется более одного пальца
+          if (e.touches.length > 1) {
+            e.preventDefault(); // Отключаем действие по умолчанию
+          }
+        },
+        { passive: false },
+      ); // { passive: false } важно для предотвращения поведения по умолчанию
+      document.addEventListener(
+        "touchmove",
+        (e) => {
+          if (e.touches.length > 1) {
+            e.preventDefault(); // Отключаем зумирование двумя пальцами
+          }
+        },
+        { passive: false },
+      ); // { passive: false } важно для отмены действия по умолчанию
+  
   function addTapListener(element, handler) {
     let touched = false;
 
